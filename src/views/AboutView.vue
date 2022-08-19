@@ -62,13 +62,33 @@ export default {
   methods: {
     handleInput(ev, currentUser) {
       this.responses[currentUser.id] = {
-        audioUserId: currentUser.id,
+        audioUserId: String(currentUser.id),
         selectedUserId: ev.target.value,
       };
     },
     handleClick() {
-      // Save in firestore
-      console.log(this.responses);
+      // Get points from responses
+      const points = Array.from(Object.values(this.responses)).reduce(
+        (acc, curr) => {
+          return curr.selectedUserId === curr.audioUserId ? acc + 1 : acc;
+        },
+        0
+      );
+
+      const data = {
+        // userName: app.auth().currentUser.displayName,
+        userName: "YOLOOO",
+        responses: this.responses,
+        points,
+      };
+
+      addDoc(dbInstance, data)
+        .then(() => {
+          console.log("Document successfully written!");
+        })
+        .catch((error) => {
+          console.error("Error writing document: ", error);
+        });
     },
   },
 };
