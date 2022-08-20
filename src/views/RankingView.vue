@@ -1,9 +1,9 @@
 <template>
-  <div class="audio-guesser">
+  <div class="score-view">
     <main>
       <header className="headings">
-        <h1>Adivina la voz</h1>
-        <h3>Escucha los audios y adivina quién es para ganar puntos</h3>
+        <h1>Ranking</h1>
+        <h3>Juega para mejorar tu puntuación</h3>
       </header>
 
       <div>responsesLength: {{ responsesLength }}</div>
@@ -78,12 +78,14 @@ export default {
         0
       );
 
+      const user = useUserStore();
+
       const data = {
-        // userName: app.auth().currentUser.displayName,
-        userName: "YOLOOO",
+        // Get user from store
+        player,
         responses: this.responses,
         points,
-        room: "5v",
+        room: "default-5v",
       };
 
       addDoc(dbInstance, data)

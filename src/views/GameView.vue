@@ -6,8 +6,6 @@
         <h3>Escucha los audios y adivina quién es para ganar puntos</h3>
       </header>
 
-      <div>responsesLength: {{ responsesLength }}</div>
-
       <article v-for="(user, index) in users" :key="user.id">
         <header className="headings">
           <h4>¿De quién es esta voz?</h4>
@@ -30,7 +28,11 @@
       <button @click="handleClick" :disabled="isButtonDisabled">
         Guardar respuestas
       </button>
-      <i v-if="isButtonDisabled">Tienes audios sin responder</i>
+      <p v-if="isButtonDisabled">
+        <em>
+          Has respondido ({{ responsesLength }} audios de {{ users.length }}).
+        </em>
+      </p>
 
       <pre>{{ JSON.stringify(responses, null, 2) }}</pre>
     </main>
@@ -43,7 +45,8 @@ import { randomUsers } from "@/data/users.js";
 import { collection, addDoc } from "firebase/firestore";
 
 import { database } from "@/firebaseConfig";
-// import { useUserStore } from "@/stores";
+import { useUserStore } from "@/stores";
+const user = useUserStore();
 
 const dbInstance = collection(database, "responses");
 
@@ -79,8 +82,12 @@ export default {
       );
 
       const data = {
-        // userName: app.auth().currentUser.displayName,
-        userName: "YOLOOO",
+        user: {
+          uid: user.user.uid,
+          name: user.user.displayName,
+          email: user.user.email,
+          photoURL: user.user.photoURL,
+        },
         responses: this.responses,
         points,
         room: "5v",

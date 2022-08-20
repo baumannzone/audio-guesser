@@ -35,12 +35,14 @@ function handleClick(e) {
   <main class="container">
     <div class="article">
       <p v-if="isLoggedIn">
-        Hola, {{ user.user.displayName }}. Ya has iniciado sesión.
-        <RouterLink to="/game">Ir a jugar</RouterLink>.
+        Ya has iniciado sesión. <RouterLink to="/game">Ir a jugar</RouterLink>.
       </p>
       <div v-else>
-        <p>Inicia sesión para jugar</p>
-        <button @click="handleClick">Iniciar sesión con Google</button>
+        <p>
+          Inicia sesión para jugar. Se necesita una cuenta de Gmail para poder
+          jugar.
+        </p>
+        <button @click="handleClick">Iniciar sesión</button>
       </div>
     </div>
   </main>

@@ -9,10 +9,25 @@ const isLoggedIn = computed(() => user.isLoggedIn);
 
 <template>
   <div class="container">
-    <nav class="spacing">
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink v-if="isLoggedIn" to="/game">Game</RouterLink>
-      <RouterLink to="/game">Game</RouterLink>
+    <nav>
+      <ul>
+        <li><strong>Adivina la Voz</strong></li>
+      </ul>
+      <ul>
+        <li><RouterLink to="/">Login</RouterLink></li>
+        <li><RouterLink v-if="isLoggedIn" to="/game">Game</RouterLink></li>
+        <li><RouterLink to="/ranking">Ranking</RouterLink></li>
+        <li>
+          <RouterLink v-if="isLoggedIn" to="/user">
+            <img
+              class="rounded"
+              :src="user.user.photoURL"
+              alt="profile image"
+              width="25"
+            />
+          </RouterLink>
+        </li>
+      </ul>
     </nav>
 
     <hr />
@@ -22,8 +37,12 @@ const isLoggedIn = computed(() => user.isLoggedIn);
 </template>
 
 <style>
-.spacing {
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
+nav .router-link-active,
+nav .router-link-exact-active {
+  font-weight: bold;
+}
+
+.rounded {
+  border-radius: 100%;
 }
 </style>

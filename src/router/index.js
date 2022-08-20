@@ -17,9 +17,15 @@ const router = createRouter({
       meta: { requiresAuth: true },
     },
     {
-      path: "/score",
-      name: "score",
-      component: () => import("../views/ScoreView.vue"),
+      path: "/ranking",
+      name: "ranking",
+      component: () => import("../views/RankingView.vue"),
+    },
+    {
+      path: "/user",
+      name: "user",
+      component: () => import("../views/UserView.vue"),
+      meta: { requiresAuth: true },
     },
   ],
 });
