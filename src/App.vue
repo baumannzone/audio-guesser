@@ -1,13 +1,18 @@
 <script setup>
+import { computed } from "vue";
 import { RouterLink, RouterView } from "vue-router";
-// import HelloWorld from './components/HelloWorld.vue'
+import { useUserStore } from "@/stores";
+
+const user = useUserStore();
+const isLoggedIn = computed(() => user.isLoggedIn);
 </script>
 
 <template>
   <div class="container">
-    <nav>
+    <nav class="spacing">
       <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/about">About</RouterLink>
+      <RouterLink v-if="isLoggedIn" to="/game">Game</RouterLink>
+      <RouterLink to="/game">Game</RouterLink>
     </nav>
 
     <hr />
@@ -15,3 +20,10 @@ import { RouterLink, RouterView } from "vue-router";
     <RouterView />
   </div>
 </template>
+
+<style>
+.spacing {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+</style>

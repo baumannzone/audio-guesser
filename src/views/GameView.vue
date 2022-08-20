@@ -14,7 +14,7 @@
           <h5>Reproduce el audio para adivinar quién es</h5>
         </header>
         <span>Audio {{ index + 1 }}/{{ users.length }}</span>
-        <audio :src="`/voices/${user.id}.mp3`" controls />
+        <audio :src="`/voices/${user.id}.mp3`" controls preload="none" />
 
         <label htmlFor="select">Elige una opción 👇</label>
         <select id="select" @input="handleInput($event, user)" value="">
@@ -32,16 +32,19 @@
       </button>
       <i v-if="isButtonDisabled">Tienes audios sin responder</i>
 
-      <pre>* {{ JSON.stringify(responses, null, 2) }}</pre>
+      <pre>{{ JSON.stringify(responses, null, 2) }}</pre>
     </main>
   </div>
 </template>
 
 <script>
+// import { useRouter } from "vue-router";
 import { randomUsers } from "@/data/users.js";
 import { collection, addDoc } from "firebase/firestore";
 
-import { app, database } from "@/firebaseConfig";
+import { database } from "@/firebaseConfig";
+// import { useUserStore } from "@/stores";
+
 const dbInstance = collection(database, "responses");
 
 export default {
@@ -80,6 +83,7 @@ export default {
         userName: "YOLOOO",
         responses: this.responses,
         points,
+        room: "5v",
       };
 
       addDoc(dbInstance, data)
@@ -91,6 +95,15 @@ export default {
         });
     },
   },
+  // beforeRouteEnter() {
+  //   const router = useRouter();
+  //   const userStore = useUserStore();
+  //   if (!userStore.isLoggedIn) {
+  //     console.log("Not logged in");
+  //     // redirect home
+  //     router.push({ name: "home" });
+  //   }
+  // },
 };
 </script>
 
