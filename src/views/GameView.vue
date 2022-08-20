@@ -1,6 +1,6 @@
 <template>
   <div class="audio-guesser">
-    <main>
+    <main v-if="!dataSent">
       <header className="headings">
         <h1>Adivina la voz</h1>
         <h3>Escucha los audios y adivina quién es para ganar puntos</h3>
@@ -36,16 +36,25 @@
 
       <pre>{{ JSON.stringify(responses, null, 2) }}</pre>
     </main>
+    <div v-else>
+      <div class="headings">
+        <h4>Datos guardados correctamente.</h4>
+        <h5>
+          Has ganado <kbd>{{ points }}</kbd> puntos.
+        </h5>
+      </div>
+      <button role="button" @click="playAgain">Volver a jugar</button>
+    </div>
   </div>
 </template>
 
 <script>
-// import { useRouter } from "vue-router";
 import { randomUsers } from "@/data/users.js";
 import { collection, addDoc } from "firebase/firestore";
 
 import { database } from "@/firebaseConfig";
 import { useUserStore } from "@/stores";
+
 const user = useUserStore();
 
 const dbInstance = collection(database, "responses");
@@ -55,6 +64,8 @@ export default {
     return {
       responses: {},
       users: randomUsers(),
+      dataSent: false,
+      points: 0,
     };
   },
   computed: {
@@ -81,6 +92,8 @@ export default {
         0
       );
 
+      this.points = points;
+
       const data = {
         user: {
           uid: user.user.uid,
@@ -96,31 +109,22 @@ export default {
       addDoc(dbInstance, data)
         .then(() => {
           console.log("Document successfully written!");
+          this.dataSent = true;
         })
         .catch((error) => {
           console.error("Error writing document: ", error);
         });
     },
+    playAgain() {
+      this.dataSent = false;
+      this.responses = {};
+      this.points = 0;
+    },
   },
-  // beforeRouteEnter() {
-  //   const router = useRouter();
-  //   const userStore = useUserStore();
-  //   if (!userStore.isLoggedIn) {
-  //     console.log("Not logged in");
-  //     // redirect home
-  //     router.push({ name: "home" });
-  //   }
-  // },
 };
 </script>
 
 <style scoped>
-.progressLabel {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 0;
-}
-
 audio {
   width: 100%;
   display: block;
