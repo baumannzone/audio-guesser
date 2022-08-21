@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from "vue";
-import { RouterLink, RouterView } from "vue-router";
 import { useUserStore } from "@/stores";
+import { RouterLink, RouterView } from "vue-router";
 
 const user = useUserStore();
 const isLoggedIn = computed(() => user.isLoggedIn);

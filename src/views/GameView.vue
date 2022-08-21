@@ -37,19 +37,17 @@
       <pre>{{ JSON.stringify(responses, null, 2) }}</pre>
     </main>
     <div v-else>
-      <div class="headings">
-        <h4>Datos guardados correctamente.</h4>
-        <h5>
-          Has ganado <kbd>{{ points }}</kbd> puntos.
-        </h5>
-      </div>
+      <h4>Datos guardados correctamente.</h4>
+      <p>
+        Has conseguido <kbd>{{ points }}</kbd> puntos.
+      </p>
       <button role="button" @click="playAgain">Volver a jugar</button>
     </div>
   </div>
 </template>
 
 <script>
-import { randomUsers } from "@/data/users.js";
+import { randomUsers, createUserData } from "@/data/users.js";
 import { collection, addDoc } from "firebase/firestore";
 
 import { database } from "@/firebaseConfig";
@@ -94,17 +92,12 @@ export default {
 
       this.points = points;
 
-      const data = {
-        user: {
-          uid: user.user.uid,
-          name: user.user.displayName,
-          email: user.user.email,
-          photoURL: user.user.photoURL,
-        },
-        responses: this.responses,
+      const data = createUserData({
+        user,
         points,
+        responses: this.responses,
         room: "5v",
-      };
+      });
 
       addDoc(dbInstance, data)
         .then(() => {
@@ -116,9 +109,9 @@ export default {
         });
     },
     playAgain() {
-      this.dataSent = false;
-      this.responses = {};
       this.points = 0;
+      this.responses = {};
+      this.dataSent = false;
     },
   },
 };

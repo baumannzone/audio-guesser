@@ -15,4 +15,15 @@ const users = [
 
 const randomUsers = () => users.sort(() => 0.5 - Math.random());
 
-export { randomUsers };
+const createUserData = ({ user, responses, points, room }) => {
+  const { uid, displayName, email, photoURL } = user.user;
+  return {
+    user: { uid, displayName, email, photoURL },
+    responses,
+    points,
+    room,
+    createdAt: new Date(),
+  };
+};
+
+export { randomUsers, createUserData };
