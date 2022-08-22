@@ -30,11 +30,11 @@
       </button>
       <p v-if="isButtonDisabled">
         <em>
-          Has respondido ({{ responsesLength }} audios de {{ users.length }}).
+          Has respondido {{ responsesLength }} audios de {{ users.length }}.
         </em>
       </p>
 
-      <pre>{{ JSON.stringify(responses, null, 2) }}</pre>
+      <pre v-if="isBaumann">{{ JSON.stringify(responses, null, 2) }}</pre>
     </main>
     <div v-else>
       <h4>Datos guardados correctamente.</h4>
@@ -73,6 +73,9 @@ export default {
     isButtonDisabled() {
       return this.responsesLength < this.users.length;
     },
+    isBaumann() {
+      return user.userUid === "P8J8JTb3XLgsavLKgkjAjJ9X7143";
+    },
   },
   methods: {
     handleInput(ev, currentUser) {
@@ -97,6 +100,7 @@ export default {
         points,
         responses: this.responses,
         room: "5v",
+        totalAudios: this.users.length,
       });
 
       addDoc(dbInstance, data)

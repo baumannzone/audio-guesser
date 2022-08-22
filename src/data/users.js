@@ -15,7 +15,7 @@ const users = [
 
 const randomUsers = () => users.sort(() => 0.5 - Math.random());
 
-const createUserData = ({ user, responses, points, room }) => {
+const createUserData = ({ user, responses, points, room, totalAudios }) => {
   const { uid, displayName, email, photoURL } = user.user;
   return {
     user: { uid, displayName, email, photoURL },
@@ -23,6 +23,7 @@ const createUserData = ({ user, responses, points, room }) => {
     points,
     room,
     createdAt: new Date(),
+    totalAudios,
   };
 };
 
